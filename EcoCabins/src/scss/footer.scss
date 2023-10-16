@@ -1,0 +1,82 @@
+// ===================================================================================
+
+// ___Стилі для footer___
+
+.footer {
+    padding: 33px 0px;
+    background-color: var(--accent);
+
+    @media (max-width: $mobile) {
+        padding: 25px 0px;
+    }
+    @media (max-width: $mobileSmall) {
+        padding: 15px 0px;
+    }
+
+    &__container {
+        max-width: 930px;
+        padding: 0px 15px;
+        display: grid;
+
+        @media (min-width: $mobileSmall) {
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+        }
+        @media (max-width: $mobileSmall) {
+            grid-template-columns: auto;
+            justify-content: center;
+            row-gap: 15px;
+            text-align: center;
+        }
+    }
+
+    &__mail {
+        justify-self: start;
+
+        @media (max-width: $mobileSmall) {
+            justify-self: center;
+        }
+        @media (min-width: $tablet) {
+            transition: all 0.3s ease;
+            &:hover {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    &__logo {
+        @media (min-width: $mobileSmall) {
+            justify-self: center;
+        }
+        @media (max-width: $mobile) {
+            width: 33px;
+            overflow: hidden;
+        }
+        @media (max-width: $mobileSmall) {
+            width: 100%
+        }
+    }
+
+    &__menu {
+        @media (min-width: $mobileSmall) {
+            justify-self: end;
+        }
+    }
+}
+.menu-footer {
+    display: flex;
+    column-gap: 30px;
+
+    &__link {
+        @media (min-width: $tablet) {
+            transition: all 0.3s ease;
+            &:hover {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
+// ===================================================================================

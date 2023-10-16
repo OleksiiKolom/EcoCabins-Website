@@ -1,0 +1,143 @@
+@use "sass:math";
+
+
+// ___ПІДКЛЮЧЕННЯ МІКСИНІВ___
+@import "base/mixins";
+
+
+// ___ПІДКЛЮЧЕННЯ ШРИФТІВ___ 
+//&display=swap - додати при підключенні через плагін
+//&subset=cyrillic-ext - додати при підключенні кириличного шрифту через плагін
+@import url("https://fonts.googleapis.com/css?family=Rubik:regular,500&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Merriweather:900&display=swap");
+
+// Підключити, якщо є локальні файли шрифтів
+//@import "fonts/fonts";
+
+
+// Підключення іконкових шрифтів 
+// Підключити, якщо є файл іконкового шрифту
+//@import "fonts/icons";
+
+
+// ___ШРИФТ ЗА ЗАМОВЧУВАННЯМ___
+$fontFamily: 'Rubik';
+
+// ___РОЗМІР ШРИФТУ ЗА ЗАМОВЧУВАННЯМ___
+$fontSize: toRem(14);
+
+// __ОСНОВНІ КОЛЬОРИ__
+$mainColor: #646D70; // Колір шрифту за замовчуванням
+
+// ___ПІДКЛЮЧЕННЯ ПАЛІТРИ КОЛЬОРІВ___
+@import "base/colors-palette";
+
+
+// ___НАЛАШТУВАННЯ АДАПТИВНОЇ СІТКИ___ 
+
+$minWidth: 320; // Мінімальна ширина сторінки
+$maxWidth: 1000; // Ширина полотна (макету)
+$maxWidthContainer: 808; // Ширина обмежуючого контейнера (0 = немає обмеження)
+$containerPadding: 30; // Загальний відступ у контейнера (ліворуч і праворуч, 0 = немає відступу)
+$containerWidth: $maxWidthContainer + $containerPadding; // Ширина спрацьовування першого брейкпоінту
+
+// Брейк-поїнти
+$pc: em($containerWidth); // ПК, ноутбуки, деякі планшети у горизонтальному положенні
+$tablet: em(991.98); // Планшети, деякі телефони в горизонтальному положенні
+$mobile: em(767.98); // Телефони L
+$mobileSmall: em(479.98); // Телефони S
+
+// Тип адаптива:
+// 1 = чуйність (у контейнера немає брейкпоінтів),
+// 2 = по брейк-поїнт (контейнер змінює свою ширину по брейк-поїнт)
+$responsiveType: 2;
+
+
+// ___ПІДКЛЮЧЕННЯ ОБНУЛЮЮЧОГО СТИЛЮ___
+@import 'nullstyle.scss';  
+
+// Стилі тега BODY 
+body {
+	// Скролл заблоковано
+	&.lock {
+		overflow: hidden;
+		touch-action: none;
+		overscroll-behavior: none;
+	}
+}
+
+// Оболонка wrapper 
+.wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	
+	// Притискаємо footer
+	> main {
+		flex: 1 1 auto;
+	}
+	// Фікс для слайдерів
+	> * {
+		min-width: 0;
+	}
+}
+
+
+// ___ОБМЕЖУЮЧИЙ КОНТЕЙНЕР___ 
+
+// (i) Стилі будуть застосовуватись до
+// всіх класів, що містять *__container
+// Наприклад header__container, main__container і т.п.
+
+@if ($responsiveType==1) {
+	// Чуйна
+	[class*="__container"] {
+		@if ($maxWidthContainer>0) {
+			max-width: toRem($containerWidth);
+			margin: 0 auto;
+		}
+		@if ($containerPadding>0) {
+			@if ($maxWidthContainer>0) {
+				padding: 0 toRem(math.div($containerPadding, 2));
+			} @else {
+				@include adaptiveValue("padding-left", math.div($containerPadding, 2), 15);
+				@include adaptiveValue("padding-right", math.div($containerPadding, 2), 15);
+			}
+		}
+	}
+} @else {
+	// Брейк-поїнтами
+	[class*="__container"] {
+		margin: 0 auto;
+		@if ($maxWidthContainer>0) {
+			max-width: toRem($containerWidth);
+		} @else {
+			@if ($containerPadding>0) {
+				padding: 0 toRem(math.div($containerPadding, 2));
+			}
+		}
+		@media (max-width: $pc) {
+			max-width: toRem(970);
+		}
+		@media (max-width: $tablet) {
+			max-width: toRem(750);
+		}
+		@media (max-width: $mobile) {
+			max-width: none;
+			@if ($containerPadding>0 and $maxWidthContainer>0) {
+				padding: 0 toRem(math.div($containerPadding, 2));
+			}
+		}
+	}
+}
+
+// Підключення стилів загальних елементів проекту
+@import "common";
+
+// Підключення стилів окремих блоків
+@import "header";
+@import "footer";
+
+// Підключення стилів окремих сторінок
+@import "home";
